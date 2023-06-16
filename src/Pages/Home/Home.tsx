@@ -1,0 +1,162 @@
+import axios from "axios";
+import React, { useEffect, useRef, useState } from "react";
+import bookModel from "../../Interfaces/bookModel";
+import inputHelper from "../../Components/Utils/inputHelper";
+import MainLoader from "../../Components/Utils/MainLoader";
+import "./Home.css";
+import Table from "../../Components/BookSearcher/BookResults";
+import { NavLink } from "react-router-dom";
+import BookResults from "../../Components/BookSearcher/BookResults";
+
+function Home() {
+  const initialApi = "https://www.googleapis.com/books/v1/volumes?q=";
+
+  // QUERY https://www.googleapis.com/books/v1/volumes?q=a&startIndex=15&maxResults=40
+
+  const [apiUrl, setApiUrl] = useState(initialApi);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [startIndex, setStartIndex] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [booksPerPage, setBooksPerPage] = useState(10);
+
+  const [loading, setLoading] = useState(false);
+  const [booksList, setBooksList] = useState<bookModel[]>([]);
+
+  const [userInput, setUserInput] = useState({
+    searchInput: "",
+    selectBooksPerPage: 10,
+  });
+
+  useEffect(() => {
+    setBooksPerPage(userInput.selectBooksPerPage);
+  }, [userInput.selectBooksPerPage]);
+
+  const handleUserInput = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const tempData = inputHelper(e, userInput);
+    setUserInput(tempData);
+  };
+
+  useEffect(() => {
+    setBooksList([]);
+  }, [userInput.searchInput]);
+
+
+
+  const searchButtonClick = async () => {
+    setBooksList((prev) => []);
+    setErrorMessage("");
+    setCurrentPage((prev) => 1);
+    await fetchBooks(booksPerPage, startIndex);
+  };
+
+  const nextButtonClick = () => {
+    setCurrentPage((prev) => prev + 1);
+    const indexOfLastBook = currentPage * booksPerPage;
+    console.log("last book" + indexOfLastBook);
+    const indexOfFirstBook = indexOfLastBook - booksPerPage;
+    console.log("first book" + indexOfFirstBook);
+
+    fetchBooks(booksPerPage, indexOfFirstBook);
+  };
+
+  const fetchBooks = async (booksPerPage: number, startIndex: number) => {
+    setLoading(true);
+    let response;
+
+    if (!userInput.searchInput) {
+      setErrorMessage("Provide search input!");
+      setLoading(false);
+      return;
+    }
+
+    let searchApi =
+      initialApi +
+      userInput.searchInput +
+      `&startIndex=${startIndex}&maxResults=${booksPerPage}`;
+
+    console.log(searchApi);
+
+    response = await axios.get(searchApi);
+
+    console.log(response);
+
+    if (response.data) {
+      const items: bookModel[] = response?.data?.items;
+      setBooksList((prev: any) => [...prev, ...items]);
+      console.log(booksList);
+    }
+
+    console.log(response);
+
+    setLoading(false);
+  };
+
+  return (
+    <div className="row ">
+      <div className="col-10 offset-1 my-2">
+        <div className="d-flex justify-content-start ">
+          <input
+            placeholder="Search here"
+            className="form-control w-25"
+            type="text"
+            onChange={(e) => handleUserInput(e)}
+            name="searchInput"
+            value={userInput.searchInput}
+          ></input>
+          <button
+            onClick={() => searchButtonClick()}
+            className="btn btn-success mx-2"
+          >
+            Search
+          </button>
+        </div>
+      </div>
+      {errorMessage && <p className="text-danger">{errorMessage}</p>}
+      <div className="col-10 offset-1">
+        <div className="card">
+          {loading && <MainLoader />}
+          <div className="card-header ">
+            <div className="d-flex justify-content-between">
+              <div className="d-flex">
+                Navigation:
+                <nav className="mx-2"> <NavLink to={"/"}>Search</NavLink></nav>
+              </div>
+
+              <div className="d-flex ">
+                <p className="my-auto mx-2">Books Per Page:</p>
+                <select
+                  style={{ width: "67px" }}
+                  className="form-select form-select-sm "
+                  onChange={(e) => handleUserInput(e)}
+                  value={userInput.selectBooksPerPage}
+                  name="selectBooksPerPage"
+                >
+                  <option value="10">10</option>
+                  <option value="20">20</option>
+                  <option value="30">30</option>
+                  <option value="40">40</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div className="card-body">
+          <BookResults booksList = {booksList}></BookResults>
+          </div>
+        </div>
+      </div>
+      <div className="d-flex align-content-center justify-content-center">
+        <button
+          className="btn btn-primary m-2"
+          onClick={() => nextButtonClick()}
+        >
+          Load More Books
+        </button>
+      </div>
+    </div>
+  );
+}
+
+export default Home;

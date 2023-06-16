@@ -1,0 +1,23 @@
+.table{
+    background-color: transparent !important;
+    --bs-table-bg: unset !important;
+}
+
+/* THIS IS JUST FOR HEADER */
+thead tr:nth-child(odd):hover {
+  background-color: transparent !important;
+  cursor: default;
+}
+
+tr:nth-child(even):hover {
+    background-color: lightblue ;
+    transition: background-color 0.3s ease-in-out ;
+    cursor: pointer;
+    
+  }
+
+  tr:nth-child(odd):hover {
+    background-color: lightblue ;
+    transition: background-color 0.3s ease-in-out ;
+    cursor: pointer;
+  }
