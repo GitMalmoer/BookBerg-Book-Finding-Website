@@ -13,7 +13,6 @@ function Home() {
 
   // QUERY https://www.googleapis.com/books/v1/volumes?q=a&startIndex=15&maxResults=40
 
-  const [apiUrl, setApiUrl] = useState(initialApi);
   const [errorMessage, setErrorMessage] = useState("");
   const [startIndex, setStartIndex] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
@@ -21,6 +20,7 @@ function Home() {
 
   const [loading, setLoading] = useState(false);
   const [booksList, setBooksList] = useState<bookModel[]>([]);
+  const [navigationString, setNavigationString] = useState<JSX.Element>();
 
   const [userInput, setUserInput] = useState({
     searchInput: "",
@@ -42,8 +42,6 @@ function Home() {
     setBooksList([]);
   }, [userInput.searchInput]);
 
-
-
   const searchButtonClick = async () => {
     setBooksList((prev) => []);
     setErrorMessage("");
@@ -51,7 +49,7 @@ function Home() {
     await fetchBooks(booksPerPage, startIndex);
   };
 
-  const nextButtonClick = () => {
+  const loadMoreBooksClick = () => {
     setCurrentPage((prev) => prev + 1);
     const indexOfLastBook = currentPage * booksPerPage;
     console.log("last book" + indexOfLastBook);
@@ -117,11 +115,14 @@ function Home() {
       <div className="col-10 offset-1">
         <div className="card">
           {loading && <MainLoader />}
+          
           <div className="card-header ">
             <div className="d-flex justify-content-between">
               <div className="d-flex">
                 Navigation:
-                <nav className="mx-2"> <NavLink to={"/"}>Search</NavLink></nav>
+                <nav className="mx-2">
+                  {navigationString && navigationString}{" "}
+                </nav>
               </div>
 
               <div className="d-flex ">
@@ -143,14 +144,18 @@ function Home() {
           </div>
 
           <div className="card-body">
-          <BookResults booksList = {booksList}></BookResults>
+            <BookResults
+              navigationString={navigationString}
+              setNavigationString={setNavigationString}
+              booksList={booksList}
+            ></BookResults>
           </div>
         </div>
       </div>
       <div className="d-flex align-content-center justify-content-center">
         <button
           className="btn btn-primary m-2"
-          onClick={() => nextButtonClick()}
+          onClick={() => loadMoreBooksClick()}
         >
           Load More Books
         </button>

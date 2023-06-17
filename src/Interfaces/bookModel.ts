@@ -12,5 +12,10 @@ export interface volumeInfo{
     pageCount? : number,
     publishedDate?: string,
     publisher?: string,
-    imageLinks? : object,
+    imageLinks? : Thumbnails,
+}
+
+export interface Thumbnails{
+    smallThumbnail : string,
+    thumbnail: string,
 }
