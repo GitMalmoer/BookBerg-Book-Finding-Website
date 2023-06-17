@@ -1,6 +1,10 @@
-.table{
-    background-color: transparent !important;
-    --bs-table-bg: unset !important;
+.table {
+  background-color: transparent !important;
+  --bs-table-bg: unset !important;
+}
+
+button {
+  border-radius: 23px !important;
 }
 
 /* THIS IS JUST FOR HEADER */
@@ -10,14 +14,18 @@ thead tr:nth-child(odd):hover {
 }
 
 tr:nth-child(even):hover {
-    background-color: lightblue ;
-    transition: background-color 0.3s ease-in-out ;
-    cursor: pointer;
-    
-  }
+  background-color: lightblue;
+  transition: background-color 0.3s ease-in-out;
+  cursor: pointer;
 
-  tr:nth-child(odd):hover {
-    background-color: lightblue ;
-    transition: background-color 0.3s ease-in-out ;
-    cursor: pointer;
-  }
+}
+
+tr:nth-child(odd):hover {
+  background-color: lightblue;
+  transition: background-color 0.3s ease-in-out;
+  cursor: pointer;
+}
+
+.navigation-header {
+  text-decoration: none;
+}

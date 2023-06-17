@@ -20,7 +20,7 @@ function Home() {
 
   const [loading, setLoading] = useState(false);
   const [booksList, setBooksList] = useState<bookModel[]>([]);
-  const [navigationString, setNavigationString] = useState<JSX.Element>();
+  const [navigationString, setNavigationString] = useState<JSX.Element>(<div className="d-flex"><NavLink className="navigation-header mx-1" to={"/"}>Search</NavLink></div>);
 
   const [userInput, setUserInput] = useState({
     searchInput: "",
@@ -38,12 +38,20 @@ function Home() {
     setUserInput(tempData);
   };
 
-  useEffect(() => {
-    setBooksList([]);
-  }, [userInput.searchInput]);
+  // useEffect(() => {
+  //   setBooksList([]);
+  //   setNavigationString(<div className="d-flex"><NavLink className="navigation-header mx-1" to={"/"}>Search</NavLink></div>);
+  // }, [userInput.searchInput]);
 
   const searchButtonClick = async () => {
-    setBooksList((prev) => []);
+    setBooksList([]);
+    setNavigationString(
+      <div className="d-flex">
+        <NavLink className="navigation-header mx-1" to={"/"}>
+          Search
+        </NavLink>
+      </div>
+    );
     setErrorMessage("");
     setCurrentPage((prev) => 1);
     await fetchBooks(booksPerPage, startIndex);
@@ -148,18 +156,13 @@ function Home() {
               navigationString={navigationString}
               setNavigationString={setNavigationString}
               booksList={booksList}
+              loadMoreBooksClick = {loadMoreBooksClick}
+              booksPerPage = {booksPerPage}
             ></BookResults>
           </div>
         </div>
       </div>
-      <div className="d-flex align-content-center justify-content-center">
-        <button
-          className="btn btn-primary m-2"
-          onClick={() => loadMoreBooksClick()}
-        >
-          Load More Books
-        </button>
-      </div>
+
     </div>
   );
 }
