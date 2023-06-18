@@ -1,0 +1,12 @@
+.about{
+    background: linear-gradient( rgba(33, 37, 41, 1), rgba(33, 37, 41, 1), rgba(33, 37, 41, 1));
+    height: 80vh;
+    color: white;
+}
+
+
+.img-container{
+    background: url("../../Assets/ladyreadin.jpg") center/cover no-repeat ;
+    position: relative;
+    
+}

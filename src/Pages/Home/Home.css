@@ -1,31 +1,38 @@
-.table {
-  background-color: transparent !important;
-  --bs-table-bg: unset !important;
+.home {
+    height: 100vh;
+    background: linear-gradient(rgba(33, 37, 41, 0.9),rgba(33, 37, 41, 0.5), rgba(255, 255, 255, 1)), url("../../Assets/readingPngOptimized.png") center/cover no-repeat ;    
+    background-position: top right;
+    scroll-behavior: smooth;
+    overflow: hidden;
 }
 
-button {
-  border-radius: 23px !important;
+.header {
 }
 
-/* THIS IS JUST FOR HEADER */
-thead tr:nth-child(odd):hover {
-  background-color: transparent !important;
-  cursor: default;
+.header-title {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 900;
+    color: white;
 }
 
-tr:nth-child(even):hover {
-  background-color: lightblue;
-  transition: background-color 0.3s ease-in-out;
-  cursor: pointer;
-
+.header-text {
+    color: white;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 300;
+    text-align: center;
 }
 
-tr:nth-child(odd):hover {
-  background-color: lightblue;
-  transition: background-color 0.3s ease-in-out;
-  cursor: pointer;
+.search-icon {
+    position: absolute;
+    cursor: pointer;
+    z-index: 999;
+    top: 0;
+    right: 0;
+    margin-right: 20px;
+    transition: transform 0.3s ease-in-out;
 }
 
-.navigation-header {
-  text-decoration: none;
+.search-icon:hover {
+    transform: scale(1.2); 
+
 }

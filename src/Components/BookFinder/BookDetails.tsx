@@ -13,9 +13,11 @@ function BookDetails({ selectedBook }: BookDetailProps) {
   }, []);
 
   const generateAuthors = () => {
-    const authors = selectedBook?.volumeInfo?.authors?.map((author: any,index : number) => {
-      return <span key={index}>{author}&nbsp;</span>;
-    });
+    const authors = selectedBook?.volumeInfo?.authors?.map(
+      (author: any, index: number) => {
+        return <span key={index}>{author}&nbsp;</span>;
+      }
+    );
 
     if (authors && authors?.length < 5) {
       setAuthorsList(<div className="d-flex text-success ">{authors}</div>);
@@ -31,7 +33,7 @@ function BookDetails({ selectedBook }: BookDetailProps) {
             <button
               onClick={() =>
                 setAuthorsList(
-                  <div className="d-flex text-success">{authors}</div>
+                  <div className="d-flex text-success flex-wrap">{authors}</div>
                 )
               }
               style={{ borderRadius: "23px" }}
@@ -53,20 +55,31 @@ function BookDetails({ selectedBook }: BookDetailProps) {
         <div className="col-2">
           <img
             style={{ borderRadius: "5%" }}
-            src={selectedBook.volumeInfo.imageLinks?.thumbnail}
+            src={
+              selectedBook.volumeInfo.imageLinks?.thumbnail ??
+              "http://books.google.com/books/content?id=ubdWzwEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api"
+            }
             alt="Book Image"
           />
         </div>
 
         <div className="col-10" style={{ textAlign: "left" }}>
           <h2>{selectedBook?.volumeInfo?.title}</h2>
-          {authorsList}
+
+          <span className="d-flex"><i className="bi bi-person me-1"></i>{authorsList}</span>
+
           {selectedBook?.volumeInfo?.publishedDate && (
-            <div className="mt-0">Published date: {selectedBook?.volumeInfo?.publishedDate}</div>
+            <div className="mt-0">
+              <i className="bi bi-calendar me-1"></i>Published date: {selectedBook?.volumeInfo?.publishedDate}
+            </div>
           )}
-          <div className="mt-0">Pages count: {selectedBook?.volumeInfo?.pageCount}</div>
+          <div className="mt-0">
+          <i className="bi bi-list-ol me-1"></i>Pages count: {selectedBook?.volumeInfo?.pageCount}
+          </div>
           {selectedBook?.volumeInfo?.publisher && (
-            <div className="mt-0" >Publisher: {selectedBook?.volumeInfo?.publisher}</div>
+            <div className="mt-0">
+              <i className="bi bi-building "></i> Publisher: {selectedBook?.volumeInfo?.publisher}
+            </div>
           )}
         </div>
       </div>

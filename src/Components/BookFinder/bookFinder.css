@@ -1,0 +1,46 @@
+.table {
+  background-color: transparent !important;
+  --bs-table-bg: unset !important;
+}
+
+button {
+  border-radius: 23px !important;
+}
+
+.bookfinder-main{
+  background-color: rgb(33, 37, 41);
+  width: 100%;
+  min-height: 50vh;
+}
+
+/* THIS IS JUST FOR HEADER */
+thead tr:nth-child(odd):hover {
+  background-color: transparent !important;
+  cursor: default;
+}
+
+tr:nth-child(even):hover {
+  background-color: lightblue;
+  transition: background-color 0.3s ease-in-out;
+  cursor: pointer;
+
+}
+
+tr:nth-child(odd):hover {
+  background-color: lightblue;
+  transition: background-color 0.3s ease-in-out;
+  cursor: pointer;
+}
+
+.navigation-header {
+  text-decoration: none;
+}
+
+.buttonLoadMoreBooks{
+  transition: transform 0.3s ease-in-out;
+}
+
+.buttonLoadMoreBooks:hover{
+  transform: scale(1.1);
+}
+

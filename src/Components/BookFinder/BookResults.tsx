@@ -27,14 +27,16 @@ function BookResults(props: Props) {
 
   const [listToRender, setListToRender] = useState<bookModel[]>([]);
   const [listOfAuthors,setListOfAuthors] = useState<bookModel[]>([]);
-  const [authorsCurrentPage, setAuthorsCurrentPage] = useState();
+  const [authorsCurrentPage, setAuthorsCurrentPage] = useState<number>(1);
   const [isAuthorBooksViewActive, setIsAuthorBooksViewActive] = useState(false);
   const [selectedBook, setSelectedBook] = useState<bookModel>();
-  const [selectedTitle, setSelectedTitle] = useState<JSX.Element>();
-  const [selectedAuthor, setSelectedAuthor] = useState<JSX.Element>();
-  const [selectedSearch, setSelectedSearch] = useState<JSX.Element>();
+  const [selectedTitleJsx, setSelectedTitleJsx] = useState<JSX.Element>();
+  const [selectedAuthorJsx, setSelectedAuthorJsx] = useState<JSX.Element>();
+  const [selectedSearchJsx, setSelectedSearchJsx] = useState<JSX.Element>();
+  const [selectedAuthor,setSelectedAuthor] = useState<any | undefined>();
   const [fetchLoading, setFetchLoading] = useState(false);
   const [navigateToSearch, setNavigateToSearch] = useState(false);
+  const [navigateToAuthor, setNavigateToAuthor] = useState(false);
 
   // WHEN THERE IS A CHANGE IN BOOKS LIST OR WHEN THE USER SEARCHES FOR NEW BOOK.
   useEffect(() => {
@@ -47,26 +49,43 @@ function BookResults(props: Props) {
   }, [booksList]);
 
   // WHEN GIVEN AUTHOR BOOKS ARE FETCHING FROM API
+  // useEffect(() => {
+  //   if (fetchLoading == true) {
+  //     console.log("fetch loading true");
+  //     setNavigationString(
+  //       <div className="d-flex navigation-header">
+  //         {selectedSearchJsx} / {selectedAuthorJsx ?? "Author Unknown"}
+  //       </div>
+  //     );
+  //   }
+  // }, [fetchLoading]);
+
+  // WHEN USER CLICKS GIVEN AUTHOR BREADCRUMB
   useEffect(() => {
-    console.log("fetch loading");
-    if (fetchLoading == true) {
+    if(navigateToAuthor == true)
+    {
+      const authorQuery = `https://www.googleapis.com/books/v1/volumes?q=inauthor:${selectedBook?.volumeInfo.authors?.at(0)}`;
+      handleAuthorsNavigation(authorQuery);
+
       setNavigationString(
         <div className="d-flex navigation-header">
-          {selectedSearch} / {selectedAuthor ?? "Author Unknown"}
+          {selectedSearchJsx} / {selectedAuthorJsx ?? "Author Unknown"}
         </div>
       );
     }
-  }, [fetchLoading]);
+    setNavigateToAuthor(false);
+  },[navigateToAuthor])
 
 
   // WHEN USER CLICKS SEARCH BREADCRUMB
   useEffect(() => {
     if (navigateToSearch == true) {
       setIsAuthorBooksViewActive(false);
+      setListOfAuthors([]);
       setSelectedBook(undefined);
       setListToRender(booksList);
       setNavigationString(
-        <div className="d-flex navigation-header">{selectedSearch}</div>
+        <div className="d-flex navigation-header">{selectedSearchJsx}</div>
       );
       setNavigateToSearch(false);
     }
@@ -76,16 +95,17 @@ function BookResults(props: Props) {
   const handleRowClick = (book: bookModel) => {
     setSelectedBook(book); // SELECTED BOOK IS SAVED IN STATE
     prepareNavigation(book);
+    console.log(book);
   };
 
   // PREPARING THE NAVIGATION BREADCRUMB WHEN THE ROW IS CLICKED
   const prepareNavigation = (book: bookModel) => {
     const author = book.volumeInfo?.authors?.at(0);
-    const authorQuery = `https://www.googleapis.com/books/v1/volumes?q=inauthor:${author}`;
+    setSelectedAuthor(author);
     const bookTitle = book?.volumeInfo?.title;
     
     // CHANGING BREADCRUMB STATES **START**
-    setSelectedSearch(
+    setSelectedSearchJsx(
       <a
         className="mx-1 navigation-header"
         onClick={() => setNavigateToSearch(true)}
@@ -95,17 +115,17 @@ function BookResults(props: Props) {
       </a>
     );
 
-    setSelectedAuthor(
+    setSelectedAuthorJsx(
       <a
         className="mx-1 navigation-header"
         style={{ cursor: "pointer" }}
-        onClick={() => handleAuthorsNavigation(authorQuery)}
+        onClick={() => setNavigateToAuthor(true)}
       >
         {author}
       </a>
     );
 
-    setSelectedTitle(<a className="mx-1 navigation-header">{bookTitle}</a>);
+    setSelectedTitleJsx(<a className="mx-1 navigation-header">{bookTitle}</a>);
     // CHANGING BREADCRUMB STATES **END**
 
     // MANUAL SET UP OF INITIAL NAVIGATION STRING
@@ -123,7 +143,7 @@ function BookResults(props: Props) {
           <a
             className="mx-1 navigation-header"
             style={{ cursor: "pointer" }}
-            onClick={() => handleAuthorsNavigation(authorQuery)}
+            onClick={() => setNavigateToAuthor(true)}
           >
             {author}
           </a>
@@ -142,11 +162,8 @@ function BookResults(props: Props) {
     setIsAuthorBooksViewActive(true);
     if(listOfAuthors.length > 1)
     {
+      console.log("list full")
       setListToRender(listOfAuthors);
-      setNavigationString(
-        <div className="d-flex navigation-header">
-          {selectedSearch} / {selectedAuthor ?? "Author Unknown"}
-        </div>);
       setSelectedBook(undefined);
     }
     else
@@ -176,18 +193,45 @@ function BookResults(props: Props) {
     }
   }
 
+  const loadMoreAuthorBooks = async () => {
+    console.log("Implement it")
+
+    // fetch authors with given query
+    // whenever this is clicked then add page count 
+
+    // initialApi +
+    // userInput.searchInput +
+    // `&startIndex=${startIndex}&maxResults=${booksPerPage}`;
+
+    setAuthorsCurrentPage((prev) => prev + 1);
+    // TO DO ^ THIS ONE ZEROE IT 
+    const indexOfLastBook = authorsCurrentPage * booksPerPage;
+    const indexOfFirstBook = indexOfLastBook - booksPerPage;
+
+    const query = `https://www.googleapis.com/books/v1/volumes?q=inauthor:${selectedAuthor}&startIndex=${indexOfFirstBook}&maxResults=${booksPerPage}`;
+
+    const list : any = await fetchAuthors(query);
+
+    if(list && list?.length > 1)
+    {
+      setListOfAuthors([...listOfAuthors,...list]);
+      setListToRender([...listOfAuthors,...list]);
+    }
+    console.log(list);
+  }
+
   const buttonLoadMoreBooksJsx =(<button
-  className="btn btn-primary m-2"
+  className="buttonLoadMoreBooks py-2 mb-2 btn btn-outline-secondary rounded-5"
   onClick={() => loadMoreBooksClick()}
 >
-  Load More Books
+ Load More Books <i className="bi bi-book ms-1"></i>
 </button>);
 
 const buttonLoadMoreAuthorBooksJsx =(<button
-  className="btn btn-primary m-2"
-  onClick={() => loadMoreBooksClick()}
+  className="buttonLoadMoreBooks py-2 mb-2 btn btn-outline-secondary rounded-5"
+  onClick={() => loadMoreAuthorBooks()}
 >
-  Load More books of {selectedAuthor}
+Load More books of {selectedAuthor}<i className="bi bi-book ms-1"></i>
 </button>);
 
   const tableJsx = (
