@@ -6,11 +6,17 @@
 button {
   border-radius: 23px !important;
 }
-
+/* rgba(48, 129, 209, 0.356) */
 .bookfinder-main{
-  background-color: rgb(33, 37, 41);
+  background: linear-gradient(rgba(255, 255, 255,1),rgba(48, 129, 209, 0.099));
   width: 100%;
   min-height: 50vh;
+}
+
+#bookfinder{
+  margin-right: 0 !important;
+  margin-left: 0 !important;
+  padding: 5px !important;
 }
 
 /* THIS IS JUST FOR HEADER */
@@ -20,14 +26,14 @@ thead tr:nth-child(odd):hover {
 }
 
 tr:nth-child(even):hover {
-  background-color: lightblue;
+  background-color: rgba(22, 127, 232, 0.262);
   transition: background-color 0.3s ease-in-out;
   cursor: pointer;
 
 }
 
 tr:nth-child(odd):hover {
-  background-color: lightblue;
+  background-color: rgba(22, 127, 232, 0.262);
   transition: background-color 0.3s ease-in-out;
   cursor: pointer;
 }

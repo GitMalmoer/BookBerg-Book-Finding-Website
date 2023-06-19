@@ -8,5 +8,10 @@
 .img-container{
     background: url("../../Assets/ladyreadin.jpg") center/cover no-repeat ;
     position: relative;
-    
 }
+
+@media (min-width: 768px) {
+    .about-section{
+        border-bottom:  solid 1px #dee2e6;
+    }
+  }

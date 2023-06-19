@@ -52,7 +52,7 @@ function BookDetails({ selectedBook }: BookDetailProps) {
   return (
     <>
       <div className="row">
-        <div className="col-2">
+        <div className="col-12 col-md-2 offset-md-0">
           <img
             style={{ borderRadius: "5%" }}
             src={
@@ -63,22 +63,28 @@ function BookDetails({ selectedBook }: BookDetailProps) {
           />
         </div>
 
-        <div className="col-10" style={{ textAlign: "left" }}>
+        <div className="col-12 col-md-10 offset-md-0" style={{ textAlign: "left" }}>
           <h2>{selectedBook?.volumeInfo?.title}</h2>
 
-          <span className="d-flex"><i className="bi bi-person me-1"></i>{authorsList}</span>
+          <span className="d-flex">
+            <i className="bi bi-person me-1"></i>
+            {authorsList}
+          </span>
 
           {selectedBook?.volumeInfo?.publishedDate && (
             <div className="mt-0">
-              <i className="bi bi-calendar me-1"></i>Published date: {selectedBook?.volumeInfo?.publishedDate}
+              <i className="bi bi-calendar me-1"></i>Published date:{" "}
+              {selectedBook?.volumeInfo?.publishedDate}
             </div>
           )}
           <div className="mt-0">
-          <i className="bi bi-list-ol me-1"></i>Pages count: {selectedBook?.volumeInfo?.pageCount}
+            <i className="bi bi-list-ol me-1"></i>Pages count:{" "}
+            {selectedBook?.volumeInfo?.pageCount}
           </div>
           {selectedBook?.volumeInfo?.publisher && (
             <div className="mt-0">
-              <i className="bi bi-building "></i> Publisher: {selectedBook?.volumeInfo?.publisher}
+              <i className="bi bi-building "></i> Publisher:{" "}
+              {selectedBook?.volumeInfo?.publisher}
             </div>
           )}
         </div>

@@ -6,6 +6,26 @@
     overflow: hidden;
 }
 
+@media (min-width: 260px) and (max-width: 768px) {
+    .home {
+      background-position: top center;
+    }
+    .input-search{
+        width: 60%;
+    }
+  }
+
+  @media (min-width: 501px) and (max-width: 900px) {
+    .home {
+        background-position: center;
+    }
+
+
+
+  }
+
+
+
 .header {
 }
 
@@ -26,7 +46,7 @@
     position: absolute;
     cursor: pointer;
     z-index: 999;
-    top: 0;
+    top: 2px;
     right: 0;
     margin-right: 20px;
     transition: transform 0.3s ease-in-out;

@@ -4,6 +4,7 @@ import { JsxElement } from "typescript";
 import axios from "axios";
 import BookDetails from "./BookDetails";
 import MainLoader from "../Utils/MainLoader";
+import toastNotify from "../Utils/toastNotify";
 
 // TODO when user goes back with breadcrumb then it goes directly to place in a long list
 
@@ -26,14 +27,14 @@ function BookResults(props: Props) {
   } = props;
 
   const [listToRender, setListToRender] = useState<bookModel[]>([]);
-  const [listOfAuthors,setListOfAuthors] = useState<bookModel[]>([]);
+  const [listOfAuthors, setListOfAuthors] = useState<bookModel[]>([]);
   const [authorsCurrentPage, setAuthorsCurrentPage] = useState<number>(1);
   const [isAuthorBooksViewActive, setIsAuthorBooksViewActive] = useState(false);
   const [selectedBook, setSelectedBook] = useState<bookModel>();
   const [selectedTitleJsx, setSelectedTitleJsx] = useState<JSX.Element>();
   const [selectedAuthorJsx, setSelectedAuthorJsx] = useState<JSX.Element>();
   const [selectedSearchJsx, setSelectedSearchJsx] = useState<JSX.Element>();
-  const [selectedAuthor,setSelectedAuthor] = useState<any | undefined>();
+  const [selectedAuthor, setSelectedAuthor] = useState<any | undefined>();
   const [fetchLoading, setFetchLoading] = useState(false);
   const [navigateToSearch, setNavigateToSearch] = useState(false);
   const [navigateToAuthor, setNavigateToAuthor] = useState(false);
@@ -42,8 +43,8 @@ function BookResults(props: Props) {
   useEffect(() => {
     setListToRender(booksList);
     // when bookslist array changes to 0 then it goes back from the BookDetails.tsx view to list view
-    if(booksList.length == 0){
-      console.log("book list empty")
+    if (booksList.length == 0) {
+      console.log("book list empty");
       setSelectedBook(undefined);
     }
   }, [booksList]);
@@ -62,9 +63,10 @@ function BookResults(props: Props) {
 
   // WHEN USER CLICKS GIVEN AUTHOR BREADCRUMB
   useEffect(() => {
-    if(navigateToAuthor == true)
-    {
-      const authorQuery = `https://www.googleapis.com/books/v1/volumes?q=inauthor:${selectedBook?.volumeInfo.authors?.at(0)}`;
+    if (navigateToAuthor == true) {
+      const authorQuery = `https://www.googleapis.com/books/v1/volumes?q=inauthor:${selectedBook?.volumeInfo.authors?.at(
+        0
+      )}`;
       handleAuthorsNavigation(authorQuery);
 
       setNavigationString(
@@ -74,8 +76,7 @@ function BookResults(props: Props) {
       );
     }
     setNavigateToAuthor(false);
-  },[navigateToAuthor])
-
+  }, [navigateToAuthor]);
 
   // WHEN USER CLICKS SEARCH BREADCRUMB
   useEffect(() => {
@@ -91,7 +92,7 @@ function BookResults(props: Props) {
     }
   }, [navigateToSearch]);
 
-   // WHEN USER CLICKS ON A ROW
+  // WHEN USER CLICKS ON A ROW
   const handleRowClick = (book: bookModel) => {
     setSelectedBook(book); // SELECTED BOOK IS SAVED IN STATE
     prepareNavigation(book);
@@ -103,7 +104,7 @@ function BookResults(props: Props) {
     const author = book.volumeInfo?.authors?.at(0);
     setSelectedAuthor(author);
     const bookTitle = book?.volumeInfo?.title;
-    
+
     // CHANGING BREADCRUMB STATES **START**
     setSelectedSearchJsx(
       <a
@@ -160,17 +161,13 @@ function BookResults(props: Props) {
   // This method is invoked when user navigates to given author. If authorslist is allready populated switch view if not then fetch data.
   const handleAuthorsNavigation = async (authorQuery: string) => {
     setIsAuthorBooksViewActive(true);
-    if(listOfAuthors.length > 1)
-    {
-      console.log("list full")
+    if (listOfAuthors.length > 1) {
+      console.log("list full");
       setListToRender(listOfAuthors);
       setSelectedBook(undefined);
-    }
-    else
-    {
+    } else {
       const givenAuthorBooks = await fetchAuthors(authorQuery);
-      if(givenAuthorBooks.length > 1)
-      {
+      if (givenAuthorBooks.length > 1) {
         setListToRender(givenAuthorBooks);
         setListOfAuthors(givenAuthorBooks);
         setSelectedBook(undefined);
@@ -185,58 +182,67 @@ function BookResults(props: Props) {
     if (response.data) {
       setFetchLoading(false);
       return response?.data?.items;
-    }
-    else
-    {
+    } else {
       setFetchLoading(false);
       return [];
     }
-  }
+  };
 
   const loadMoreAuthorBooks = async () => {
-    console.log("Implement it")
+    console.log("Implement it");
 
     // fetch authors with given query
-    // whenever this is clicked then add page count 
+    // whenever this is clicked then add page count
 
     // initialApi +
     // userInput.searchInput +
     // `&startIndex=${startIndex}&maxResults=${booksPerPage}`;
 
     setAuthorsCurrentPage((prev) => prev + 1);
-    // TO DO ^ THIS ONE ZEROE IT 
+    // TO DO ^ THIS ONE ZEROE IT
     const indexOfLastBook = authorsCurrentPage * booksPerPage;
     const indexOfFirstBook = indexOfLastBook - booksPerPage;
 
     const query = `https://www.googleapis.com/books/v1/volumes?q=inauthor:${selectedAuthor}&startIndex=${indexOfFirstBook}&maxResults=${booksPerPage}`;
 
-    const list : any = await fetchAuthors(query);
+    const list: any = await fetchAuthors(query);
 
-    if(list && list?.length > 1)
-    {
-      setListOfAuthors([...listOfAuthors,...list]);
-      setListToRender([...listOfAuthors,...list]);
+    if (list && list?.length > 1) {
+      setListOfAuthors([...listOfAuthors, ...list]);
+      setListToRender([...listOfAuthors, ...list]);
     }
+
+    if(list === undefined)
+    {
+      toastNotify("No More Books To Show","error")
+    }
+
+    
     console.log(list);
-  }
+  };
 
-  const buttonLoadMoreBooksJsx =(<button
-  className="buttonLoadMoreBooks py-2 mb-2 btn btn-outline-secondary rounded-5"
-  onClick={() => loadMoreBooksClick()}
->
- Load More Books <i className="bi bi-book ms-1"></i>
-</button>);
+  const buttonLoadMoreBooksJsx = (
+    <button
+      className="buttonLoadMoreBooks py-2 mb-2 btn btn-outline-secondary rounded-5"
+      onClick={() => loadMoreBooksClick()}
+    >
+      Load More Books <i className="bi bi-book ms-1"></i>
+    </button>
+  );
 
-const buttonLoadMoreAuthorBooksJsx =(<button
-  className="buttonLoadMoreBooks py-2 mb-2 btn btn-outline-secondary rounded-5"
-  onClick={() => loadMoreAuthorBooks()}
->
-Load More books of {selectedAuthor}<i className="bi bi-book ms-1"></i>
-</button>);
+  const buttonLoadMoreAuthorBooksJsx = (
+    <button
+      className="buttonLoadMoreBooks py-2 mb-2 btn btn-outline-secondary rounded-5"
+      onClick={() => loadMoreAuthorBooks()}
+    >
+      Load More books of {selectedAuthor}
+      <i className="bi bi-book ms-1"></i>
+    </button>
+  );
 
   const tableJsx = (
     <div>
-      <table className="table">
+      <table className="table" style={{tableLayout:"fixed"}}>
         <thead>
           <tr>
             <th>Title</th>
@@ -273,14 +279,16 @@ Load More books of {selectedAuthor}<i className="bi bi-book ms-1"></i>
         </tbody>
       </table>
       <div className="d-flex align-content-center justify-content-center">
-            {isAuthorBooksViewActive ? buttonLoadMoreAuthorBooksJsx : buttonLoadMoreBooksJsx }
+        {isAuthorBooksViewActive
+          ? buttonLoadMoreAuthorBooksJsx
+          : buttonLoadMoreBooksJsx}
       </div>
     </div>
   );
 
   return (
     <div>
-      {fetchLoading && <MainLoader/>}
+      {fetchLoading && <MainLoader />}
       {selectedBook ? <BookDetails selectedBook={selectedBook} /> : tableJsx}
     </div>
   );
