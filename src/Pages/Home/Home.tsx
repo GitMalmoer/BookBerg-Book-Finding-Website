@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import "./home.css";
 import BookFinder from "../../Components/BookFinder/BookFinder";
 import About from "../About/About";
