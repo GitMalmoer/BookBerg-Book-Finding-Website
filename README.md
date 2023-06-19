@@ -12,7 +12,7 @@
   - IMPLEMENT REDUX AND STORE BOOKS AND AUTHORS IN REDUX STORE
 
 ## GIF
-![React App - Google Chrome 2023-06-19 12-58-29](https://github.com/GitMalmoer/kongsberg-app/assets/113827015/fa493918-1a4e-4dd7-8199-4b300307536f)
+![AppGif](https://github.com/GitMalmoer/BookBerg-Book-Finding-Website/assets/113827015/3970618b-8c12-46c8-9eb7-c5144ffd8c0b)
 
 ## Installation 🛠️
 1. Clone the repository
