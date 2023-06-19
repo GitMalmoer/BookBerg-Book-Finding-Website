@@ -12,6 +12,7 @@ function BookDetails({ selectedBook }: BookDetailProps) {
     generateAuthors();
   }, []);
 
+  // some books can have more than 100 contributors/authors so the app is displaying just 5 with the possibility to load all on request(BUTTON CLICK)
   const generateAuthors = () => {
     const authors = selectedBook?.volumeInfo?.authors?.map(
       (author: any, index: number) => {

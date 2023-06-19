@@ -4,6 +4,7 @@ function MainLoader() {
   return (
     <div style={{
         position:"fixed", 
+        zIndex:999,
         top:"0", 
         left:"0", 
         width:"100vw",

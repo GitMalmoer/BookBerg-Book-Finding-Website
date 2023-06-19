@@ -15,19 +15,12 @@
     }
   }
 
-  @media (min-width: 501px) and (max-width: 900px) {
+  @media (min-width: 769px) and (max-width: 900px) {
     .home {
         background-position: center;
     }
-
-
-
   }
 
-
-
-.header {
-}
 
 .header-title {
     font-family: 'Poppins', sans-serif;

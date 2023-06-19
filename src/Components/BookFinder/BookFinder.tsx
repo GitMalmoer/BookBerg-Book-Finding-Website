@@ -4,7 +4,6 @@ import bookModel from "../../Interfaces/bookModel";
 import inputHelper from "../Utils/inputHelper";
 import MainLoader from "../Utils/MainLoader";
 import "./bookFinder.css";
-import Table from "./BookResults";
 import { NavLink } from "react-router-dom";
 import BookResults from "./BookResults";
 import toastNotify from "../Utils/toastNotify";
@@ -55,14 +54,6 @@ function BookFinder({ isSearchButtonClicked, searchUserInput }: props) {
     setUserInput(tempData);
   };
 
-  // setting initial value of 'isSearchButtonClicked' to false to not trigger UseEffect on 'isSearchButtonClicked' when it changes.
-  useEffect(() => {
-    console.log("initial render");
-    console.log(isSearchButtonClicked);
-    //isSearchButtonClicked = false;
-    console.log(isSearchButtonClicked);
-  }, []);
-
   // WHENEVER IS BUTTON CLICKED IN PARENT COMPONENT
   useEffect(() => {
     if (isSearchButtonClicked != null) {
@@ -72,7 +63,6 @@ function BookFinder({ isSearchButtonClicked, searchUserInput }: props) {
 
   // ACTUAL FUNCTION WHEN SEARCH BUTTON IS CLICKED
   const searchButtonClick = async () => {
-    console.log("search button action invoked");
     setCurrentPage(1);
     setBooksList([]);
     setNavigationString(
@@ -114,7 +104,6 @@ function BookFinder({ isSearchButtonClicked, searchUserInput }: props) {
       `&startIndex=${startIndex}&maxResults=${booksPerPage}`;
 
     response = await axios.get(searchApi);
-    console.log(response);
 
     if (response?.data?.totalItems == 0) {
       toastNotify(
@@ -127,7 +116,6 @@ function BookFinder({ isSearchButtonClicked, searchUserInput }: props) {
 
     if (response.data) {
       let items: bookModel[];
-
       if (Array.isArray(response.data.items)) {
         items = response.data.items;
       } else {
@@ -140,7 +128,6 @@ function BookFinder({ isSearchButtonClicked, searchUserInput }: props) {
       }
 
       setBooksList((prev: any) => [...prev, ...items]);
-      console.log(booksList);
     }
 
     setLoading(false);

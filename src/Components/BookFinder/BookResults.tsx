@@ -44,22 +44,9 @@ function BookResults(props: Props) {
     setListToRender(booksList);
     // when bookslist array changes to 0 then it goes back from the BookDetails.tsx view to list view
     if (booksList.length == 0) {
-      console.log("book list empty");
       setSelectedBook(undefined);
     }
   }, [booksList]);
-
-  // WHEN GIVEN AUTHOR BOOKS ARE FETCHING FROM API
-  // useEffect(() => {
-  //   if (fetchLoading == true) {
-  //     console.log("fetch loading true");
-  //     setNavigationString(
-  //       <div className="d-flex navigation-header">
-  //         {selectedSearchJsx} / {selectedAuthorJsx ?? "Author Unknown"}
-  //       </div>
-  //     );
-  //   }
-  // }, [fetchLoading]);
 
   // WHEN USER CLICKS GIVEN AUTHOR BREADCRUMB
   useEffect(() => {
@@ -96,7 +83,6 @@ function BookResults(props: Props) {
   const handleRowClick = (book: bookModel) => {
     setSelectedBook(book); // SELECTED BOOK IS SAVED IN STATE
     prepareNavigation(book);
-    console.log(book);
   };
 
   // PREPARING THE NAVIGATION BREADCRUMB WHEN THE ROW IS CLICKED
@@ -105,7 +91,7 @@ function BookResults(props: Props) {
     setSelectedAuthor(author);
     const bookTitle = book?.volumeInfo?.title;
 
-    // CHANGING BREADCRUMB STATES **START**
+    //**START** CHANGING BREADCRUMB STATES 
     setSelectedSearchJsx(
       <a
         className="mx-1 navigation-header"
@@ -127,7 +113,7 @@ function BookResults(props: Props) {
     );
 
     setSelectedTitleJsx(<a className="mx-1 navigation-header">{bookTitle}</a>);
-    // CHANGING BREADCRUMB STATES **END**
+    // **END** CHANGING BREADCRUMB STATES 
 
     // MANUAL SET UP OF INITIAL NAVIGATION STRING
     const navigationString = (
@@ -158,11 +144,10 @@ function BookResults(props: Props) {
     setNavigationString(navigationString);
   };
 
-  // This method is invoked when user navigates to given author. If authorslist is allready populated switch view if not then fetch data.
+  // This method is invoked when user navigates to given author(clicks breadcrumb). If authorslist is allready populated switch view if not then fetch data.
   const handleAuthorsNavigation = async (authorQuery: string) => {
     setIsAuthorBooksViewActive(true);
     if (listOfAuthors.length > 1) {
-      console.log("list full");
       setListToRender(listOfAuthors);
       setSelectedBook(undefined);
     } else {
@@ -189,17 +174,8 @@ function BookResults(props: Props) {
   };
 
   const loadMoreAuthorBooks = async () => {
-    console.log("Implement it");
-
-    // fetch authors with given query
-    // whenever this is clicked then add page count
-
-    // initialApi +
-    // userInput.searchInput +
-    // `&startIndex=${startIndex}&maxResults=${booksPerPage}`;
-
     setAuthorsCurrentPage((prev) => prev + 1);
-    // TO DO ^ THIS ONE ZEROE IT
+
     const indexOfLastBook = authorsCurrentPage * booksPerPage;
     const indexOfFirstBook = indexOfLastBook - booksPerPage;
 
@@ -212,13 +188,10 @@ function BookResults(props: Props) {
       setListToRender([...listOfAuthors, ...list]);
     }
 
-    if(list === undefined)
-    {
-      toastNotify("No More Books To Show","error")
+    if (list === undefined) {
+      toastNotify("No More Books To Show", "error");
     }
 
-    
-    console.log(list);
   };
 
   const buttonLoadMoreBooksJsx = (
@@ -242,7 +215,7 @@ function BookResults(props: Props) {
 
   const tableJsx = (
     <div>
-      <table className="table" style={{tableLayout:"fixed"}}>
+      <table className="table" style={{ tableLayout: "fixed" }}>
         <thead>
           <tr>
             <th>Title</th>

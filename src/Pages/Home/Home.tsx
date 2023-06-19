@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./home.css";
 import BookFinder from "../../Components/BookFinder/BookFinder";
 import About from "../About/About";
-import { NavHashLink, HashLink } from "react-router-hash-link";
+import { HashLink } from "react-router-hash-link";
 
 function Home() {
   const [userInput, setUserInput] = useState<string>("");
@@ -12,23 +12,31 @@ function Home() {
   };
 
   const handleSearchClick = () => {
-    if(isSearchButtonClicked == null)
-    {
-      console.log("IF " +isSearchButtonClicked);
+    if (isSearchButtonClicked == null) {
       setIsSearchButtonClicked(false);
-    }
-    else
-    {
-      console.log("ELSE " + isSearchButtonClicked);
+    } else {
       setIsSearchButtonClicked(!isSearchButtonClicked);
     }
   };
 
-  
+  const handleSubmit = (e: any) => {
+    const mainSection = document.getElementById("bookfinder");
+
+    if (mainSection) {
+      mainSection.scrollIntoView({ behavior: "smooth" });
+    }
+
+    e.preventDefault();
+    handleSearchClick();
+  };
 
   return (
     <>
-      <form onSubmit={(e) => {handleSearchClick(); e.preventDefault()}}>
+      <form
+        onSubmit={(e) => {
+          handleSubmit(e);
+        }}
+      >
         <div className="home">
           <div className="row h-100 ms-2">
             <div className="col-lg-6 col-md-6 offset-md-3 col-12 ">
