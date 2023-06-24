@@ -1,5 +1,7 @@
 deployed site, so you guys have it easier to check the assigned task.
 
+I tried to deploy on gh-pages but it does not support react router dom
+
 
 **LIVE WEBSITE:** https://bookberg.netlify.app/
 
