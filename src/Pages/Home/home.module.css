@@ -1,6 +1,6 @@
 .home {
     height: 100vh;
-    background: linear-gradient(rgba(33, 37, 41, 0.9),rgba(33, 37, 41, 0.5), rgba(255, 255, 255, 1)), url("../../Assets/readingPngOptimized.png") center/cover no-repeat ;    
+    background: linear-gradient(rgba(33, 37, 41, 0.9), rgba(33, 37, 41, 0.5), rgba(255, 255, 255, 1)), url("../../Assets/readingPngOptimized.png") center/cover no-repeat;
     background-position: top right;
     scroll-behavior: smooth;
     overflow: hidden;
@@ -8,18 +8,19 @@
 
 @media (min-width: 260px) and (max-width: 768px) {
     .home {
-      background-position: top center;
+        background-position: top center;
     }
-    .input-search{
+
+    .input-search {
         width: 60%;
     }
-  }
+}
 
-  @media (min-width: 769px) and (max-width: 900px) {
+@media (min-width: 769px) and (max-width: 900px) {
     .home {
         background-position: center;
     }
-  }
+}
 
 
 .header-title {
@@ -46,6 +47,6 @@
 }
 
 .search-icon:hover {
-    transform: scale(1.2); 
+    transform: scale(1.2);
 
 }
