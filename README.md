@@ -17,18 +17,18 @@
 ## Installation 🛠️
 1. Clone the repository
 
-`git clone PATH`
+- `git clone PATH`
 
 2. Change the working directory
 
-`cd kongsberg-app`
+- `cd kongsberg-app`
 
 3. Install dependencies
 
-`npm install`
+- `npm install`
 
 4. Run the app
 
-`npm start`
+- `npm start`
 
 🌟 You are all set!
