@@ -1,3 +1,4 @@
+deployed site, so you guys have it easier to check the assigned task.
 **LIVE WEBSITE:** https://bookberg.netlify.app/
 
 ## Features
