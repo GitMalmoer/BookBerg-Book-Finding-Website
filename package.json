@@ -1,4 +1,5 @@
 {
+  "homepage": "https://gitmalmoer.github.io/BookBerg-Book-Finding-Website/",
   "name": "kongsberg-app",
   "version": "0.1.0",
   "private": true,
@@ -46,6 +47,7 @@
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
-    "@types/react-router-hash-link": "^2.4.6"
+    "@types/react-router-hash-link": "^2.4.6",
+    "gh-pages": "^5.0.0"
   }
 }
